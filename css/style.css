@@ -1,0 +1,431 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --border: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 48%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-image: linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.05) 25%,
+        transparent 25%,
+        transparent 75%,
+        rgba(255, 255, 255, 0.05) 75%
+    );
+    background-size: 60px 60px;
+    transition: background-color 0.3s ease;
+  }
+}
+
+.dark body {
+    background-image: linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.02) 25%,
+        transparent 25%,
+        transparent 75%,
+        rgba(255, 255, 255, 0.02) 75%
+    );
+    background-size: 60px 60px;
+}
+
+/* 动画效果 */
+.animate-spin-slow {
+    animation: spin 3s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+.animate-float {
+    animation: float 3s ease-in-out infinite;
+}
+
+/* 卡片基础样式 */
+.card {
+    @apply rounded-xl p-6 relative overflow-hidden;
+    background-color: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 暗色主题卡片 */
+.dark .card {
+    background-color: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+/* 卡片悬停效果 */
+.card:hover {
+    transform: translateY(-5px) rotateX(2deg);
+    background-color: rgba(255, 255, 255, 0.18);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.03);
+}
+
+.dark .card:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.05);
+}
+
+/* 卡片内容布局 */
+.card > div {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* 卡片内容过渡效果 */
+.member-info,
+.idea-info,
+.project-info,
+.project-details {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    backface-visibility: hidden;
+    min-height: 200px;
+}
+
+.hidden {
+    opacity: 0;
+    transform: rotateY(180deg) translateZ(100px);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    pointer-events: none;
+}
+
+/* 标题样式 */
+.card h3 {
+    @apply text-xl font-bold mb-3;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* 链接样式优化 */
+.card a {
+    position: relative;
+    text-decoration: none;
+    opacity: 0.8;
+    transition: all 0.2s ease;
+}
+
+.card a::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    bottom: -1px;
+    left: 0;
+    background-color: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.3s ease;
+}
+
+.card a:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
+/* 标签样式 */
+.card .tag {
+    @apply px-2 py-1 rounded-md text-sm;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(4px);
+}
+
+.dark .card .tag {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+/* 提示文本样式 */
+.card .hint-text {
+    @apply text-sm mt-4 text-center;
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+}
+
+.card:hover .hint-text {
+    opacity: 0.8;
+}
+
+/* 文字渐变效果 */
+.text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r;
+    from: hsl(var(--primary));
+    to: hsl(var(--accent));
+    animation: hue-rotate 10s linear infinite;
+}
+
+@keyframes hue-rotate {
+    from { filter: hue-rotate(0deg); }
+    to { filter: hue-rotate(360deg); }
+}
+
+/* 全局过渡效果 */
+* {
+    transition: 
+        background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+        color 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+        border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 无障碍支持 */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
+        animation: none !important;
+    }
+}
+
+/* 像素主题优化 */
+[data-theme="pixel"] {
+    image-rendering: pixelated;
+    --pixel-shadow: 
+        2px 0 0 0 rgba(0, 0, 0, 0.2),
+        -2px 0 0 0 rgba(0, 0, 0, 0.2),
+        0 2px 0 0 rgba(0, 0, 0, 0.2),
+        0 -2px 0 0 rgba(0, 0, 0, 0.2);
+}
+
+/* 像素主题字体设置 */
+[data-theme="pixel"] * {
+    font-family: 'Zpix', 'Noto Sans SC', monospace !important;
+    letter-spacing: 0;
+    line-height: 1.5;
+    image-rendering: pixelated;
+}
+
+/* 像素主题卡片样式 */
+[data-theme="pixel"] .card {
+    border-width: 2px;
+    border-style: solid;
+    border-color: #000;
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: var(--pixel-shadow);
+    padding: 1rem;
+    transform: translate(0, 0);
+    transition: transform 0.1s step-end;
+}
+
+[data-theme="pixel"] .card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 
+        4px 0 0 0 rgba(0, 0, 0, 0.2),
+        -2px 0 0 0 rgba(0, 0, 0, 0.2),
+        0 4px 0 0 rgba(0, 0, 0, 0.2),
+        0 -2px 0 0 rgba(0, 0, 0, 0.2);
+}
+
+/* 像素主题文字样式 */
+[data-theme="pixel"] h1,
+[data-theme="pixel"] h2,
+[data-theme="pixel"] h3,
+[data-theme="pixel"] p,
+[data-theme="pixel"] a,
+[data-theme="pixel"] span {
+    text-shadow: var(--pixel-shadow);
+    transform: translate(0, 0);
+}
+
+/* 像素主题标签样式 */
+[data-theme="pixel"] .tag {
+    border-width: 2px;
+    border-style: solid;
+    border-color: #000;
+    padding: 0.25rem 0.5rem;
+    box-shadow: var(--pixel-shadow);
+    image-rendering: pixelated;
+}
+
+/* Zpix 字体 */
+@font-face {
+    font-family: 'Zpix';
+    src: url('https://fastly.jsdelivr.net/gh/SolidZORO/zpix-pixel-font@latest/dist/zpix.ttf') format('truetype');
+    font-display: swap;
+}
+
+/* 中国风主题优化 */
+[data-theme="chinese"] .card {
+    border-radius: 4px;
+    box-shadow: 
+        0 4px 12px -2px rgba(0, 0, 0, 0.1),
+        0 2px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+/* 主题特定字体 */
+[data-theme="pixel"] * {
+    font-family: 'Press Start 2P', 'Noto Sans SC', cursive;
+    letter-spacing: 0.05em;
+    line-height: 1.8;
+}
+
+[data-theme="tech"] * {
+    font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
+    letter-spacing: 0.02em;
+    line-height: 1.6;
+}
+
+[data-theme="chinese"] * {
+    font-family: 'Noto Serif SC', serif;
+    letter-spacing: 0.05em;
+    line-height: 1.8;
+}
+
+[data-theme="minimal"] * {
+    font-family: 'Inter', 'Noto Sans SC', sans-serif;
+    letter-spacing: -0.01em;
+    line-height: 1.7;
+}
+
+/* 文字动画效果 */
+.text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r;
+    from: hsl(var(--primary));
+    to: hsl(var(--accent));
+    animation: hue-rotate 10s linear infinite;
+}
+
+@keyframes hue-rotate {
+    from { filter: hue-rotate(0deg); }
+    to { filter: hue-rotate(360deg); }
+}
+
+/* 过渡效果 */
+* {
+    transition: background-color 0.3s ease, 
+                color 0.3s ease, 
+                border-color 0.3s ease,
+                transform 0.3s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
+        animation: none !important;
+    }
+}
+
+/* 链接悬停效果 */
+a {
+    position: relative;
+    text-decoration: none;
+}
+
+a::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    bottom: -2px;
+    left: 0;
+    background-color: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.3s ease;
+}
+
+a:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
+/* 基础字体设置 */
+@layer base {
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+}
+
+/* 像素主题 */
+[data-theme="pixel"] * {
+    font-family: 'Zpix', 'Noto Sans SC', monospace !important;
+    letter-spacing: 0;
+    line-height: 1.5;
+    image-rendering: pixelated;
+}
+
+/* 科技主题 */
+[data-theme="tech"] * {
+    font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
+    letter-spacing: 0.02em;
+    line-height: 1.6;
+}
+
+/* 中国风主题 */
+[data-theme="chinese"] * {
+    font-family: 'Noto Serif SC', serif;
+    letter-spacing: 0.05em;
+    line-height: 1.8;
+}
+
+/* 简约主题 */
+[data-theme="minimal"] * {
+    font-family: 'Inter', 'Noto Sans SC', sans-serif;
+    letter-spacing: -0.01em;
+    line-height: 1.7;
+}
+
+/* Zpix 像素字体 */
+@font-face {
+    font-family: 'Zpix';
+    src: url('https://fastly.jsdelivr.net/gh/SolidZORO/zpix-pixel-font@latest/dist/zpix.ttf') format('truetype');
+    font-display: swap;
+}
