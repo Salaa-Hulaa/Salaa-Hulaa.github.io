@@ -42,8 +42,8 @@ const teamMembers = [
             personal: "https://abitginger.github.io"
         },
         idea: {
-            title: "个人网站",
-            description: "正准备过审，被刨空了qwq，但是会继续努力的！"
+            title: "不务正业的参与者",
+            description: "“这是什么？玩一下”"
         }
     },
     {
