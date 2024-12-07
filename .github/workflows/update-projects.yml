@@ -1,0 +1,54 @@
+name: Update Projects
+
+on:
+  push:
+    branches:
+      - main  # 或者你的主分支名称
+
+jobs:
+  update-projects:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Get organization repositories
+        uses: actions/github-script@v6
+        id: get-repos
+        with:
+          script: |
+            const core = require('@actions/core');
+            const github = require('@actions/github');
+            const octokit = github.getOctokit(core.getInput('token'));
+
+            const { data: repos } = await octokit.rest.repos.listForOrg({
+              org: 'Salaa-Hulaa',
+            });
+
+            core.setOutput('repos', JSON.stringify(repos));
+
+      - name: Update projects data
+        run: |
+          const repos = JSON.parse('${{ steps.get-repos.outputs.repos }}');
+          const projects = repos.filter(repo => repo.has_pages).map(repo => ({
+            id: repo.id,
+            title: repo.name,
+            date: repo.updated_at.split('T')[0],
+            description: repo.description || '',
+            link: repo.homepage || `https://Salaa-Hulaa.github.io/${repo.name}/`, 
+            tags: []  # 可以根据需要添加标签
+          }));
+
+          const dataFile = 'js/data.js';
+          const dataContent = `const projects = ${JSON.stringify(projects, null, 2)};`;
+          
+          // 处理仓库名称中包含特殊字符的情况
+          const safeDataContent = dataContent.replace(/'/g, "\\'");
+
+          fs.writeFileSync(dataFile, safeDataContent);
+
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Update projects data
+          file_pattern: js/data.js

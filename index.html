@@ -73,7 +73,7 @@
         </div>
 
         <div class="flex flex-wrap justify-center gap-8" id="projects">
-            <!-- Projects will be dynamically inserted here -->
+            
         </div>
 
         <div class="text-center mt-8">
@@ -103,5 +103,20 @@
     <script src="js/data.js"></script>
     <script src="js/mosaic.js"></script>
     <script src="js/main.js"></script>
+    <script>
+        const projectsContainer = document.getElementById('projects');
+        const projectsData = projects; // 从 js/data.js 获取项目数据
+
+        projectsData.forEach(project => {
+            const projectElement = document.createElement('div');
+            projectElement.classList.add('w-64', 'p-4', 'bg-white', 'rounded-lg', 'shadow-md', 'dark:bg-gray-800', 'dark:text-white');
+            projectElement.innerHTML = `
+                <h3 class="text-xl font-bold mb-2">${project.title}</h3>
+                <p class="text-gray-700 dark:text-gray-400 mb-2">${project.description}</p>
+                <a href="${project.link}" target="_blank" class="text-blue-500 hover:underline">访问项目</a>
+            `;
+            projectsContainer.appendChild(projectElement);
+        });
+    </script>
 </body>
-</html> 
+</html>
