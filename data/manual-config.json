@@ -1,0 +1,134 @@
+{
+  "members_override": {
+    "Siupa1": {
+      "role": "班长先生&群主大人",
+      "introduction": "不会js的说，代码仓都是AI。摆烂乐子人，硬件转自动驾驶方向",
+      "skills": ["面向CV的编程", "自动驾驶调参人"],
+      "interests": ["技术探索", "抽象与摆烂"],
+      "social": {
+        "github": "Siupa1",
+        "custom": {
+          "icon": "🎓",
+          "url": "https://github.com/siupal",
+          "name": "Siupa1"
+        }
+      },
+      "customization": {
+        "cardColor": "rgba(255, 255, 255, 0.3)",
+        "textColor": "#000000",
+        "borderColor": "rgba(147, 51, 234, 0.3)"
+      }
+    },
+    "Yangcloong": {
+      "role": "龙哥",
+      "introduction": "技术支持，提供技术支持和解决方案，专注于代码质量和性能优化",
+      "skills": ["技术开发", "性能优化", "问题解决"],
+      "interests": ["代码质量", "技术创新"],
+      "social": {
+        "github": "Yangcloong",
+        "custom": {
+          "icon": "🐉",
+          "url": "https://github.com/Yangcloong",
+          "name": "技术支持"
+        }
+      },
+      "customization": {
+        "cardColor": "rgba(255, 255, 255, 0.3)",
+        "textColor": "#000000",
+        "borderColor": "rgba(59, 130, 246, 0.3)"
+      }
+    },
+    "一块糖而已": {
+      "role": "不务正业的参与者",
+      "introduction": "\"这是什么？\\n玩一下\"",
+      "skills": ["创意思维", "探索精神"],
+      "interests": ["尝试新事物", "技术玩耍"],
+      "social": {
+        "custom": {
+          "icon": "🌱",
+          "url": "https://abitginger.top/",
+          "name": "一块姜而已"
+        }
+      },
+      "customization": {
+        "cardColor": "rgba(255, 255, 255, 0.3)",
+        "textColor": "#000000",
+        "borderColor": "rgba(236, 72, 153, 0.3)"
+      }
+    }
+  },
+  "projects_override": {
+    "Salaa-Hulaa.github.io": {
+      "description_zh": "洒洒水啦团队的官方网站",
+      "custom_image": null,
+      "demo_url": "https://salaa-hulaa.github.io",
+      "documentation": "README.md",
+      "highlights": [
+        "团队介绍",
+        "项目展示",
+        "成员名片"
+      ],
+      "team_members": ["Siupa1", "Yangcloong", "一块姜而已"],
+      "status": "active",
+      "priority": 1,
+      "category": "团队主页",
+      "customization": {
+        "cardColor": "rgba(255, 255, 255, 0.3)",
+        "textColor": "#000000",
+        "borderColor": "rgba(147, 51, 234, 0.3)"
+      }
+    },
+    "__pattern__": {
+      "description_zh": "这是一个模式配置，适用于所有未单独配置的项目",
+      "pattern_match": ".*",
+      "auto_translate": true,
+      "default_category": "其他项目",
+      "default_status": "active",
+      "default_priority": 0,
+      "team_members": [],
+      "customization": {
+        "cardColor": "rgba(255, 255, 255, 0.3)",
+        "textColor": "#000000",
+        "borderColor": "rgba(147, 51, 234, 0.3)"
+      }
+    }
+  },
+  "update_rules": {
+    "project_auto_update": {
+      "enabled": true,
+      "update_interval": "6h",
+      "translate_description": true,
+      "readme_excerpt_length": 3,
+      "exclude_patterns": [
+        "^_",
+        ".*\\.temp$"
+      ],
+      "category_rules": [
+        {
+          "pattern": ".*-docs$",
+          "category": "文档项目"
+        },
+        {
+          "pattern": ".*-ui$",
+          "category": "界面项目"
+        }
+      ],
+      "priority_rules": [
+        {
+          "pattern": "^Salaa-Hulaa\\.github\\.io$",
+          "priority": 100
+        },
+        {
+          "pattern": "^docs-",
+          "priority": 90
+        }
+      ]
+    },
+    "member_auto_update": {
+      "enabled": true,
+      "update_interval": "12h",
+      "default_role": "团队成员",
+      "exclude_members": ["bot-*"]
+    }
+  }
+} 

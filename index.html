@@ -16,13 +16,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@400;700&family=Inter:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="preload" as="font" href="https://fastly.jsdelivr.net/gh/SolidZORO/zpix-pixel-font@latest/dist/zpix.ttf" type="font/ttf" crossorigin>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="preload" href="https://cdn.jsdelivr.net/gh/SolidZORO/zpix-pixel-font@latest/dist/zpix.ttf" as="font" type="font/ttf" crossorigin>
-    <link rel="preload" href="https://cdn.jsdelivr.net/gh/chawyehsu/lxgw-wenkai-webfont@latest/dist/LXGWWenKai-Regular.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="https://cdn.jsdelivr.net/gh/chawyehsu/lxgw-wenkai-webfont@latest/dist/LXGWWenKaiMono-Regular.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="https://cdn.jsdelivr.net/gh/chawyehsu/lxgw-wenkai-webfont@latest/dist/LXGWWenKaiScreen-Regular.woff2" as="font" type="font/woff2" crossorigin>
 </head>
 <body class="min-h-screen bg-background text-foreground relative transition-colors duration-300">
     <canvas id="mosaicBackground" class="fixed inset-0 opacity-20 -z-10"></canvas>
@@ -47,6 +40,21 @@
         </button>
     </div>
     
+    <div id="loadingIndicator" class="fixed top-0 left-0 w-full h-1 bg-purple-100 dark:bg-purple-900 transition-all duration-300 transform scale-x-0"></div>
+    
+    <div id="errorContainer" class="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 hidden">
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+            <strong class="font-bold">错误！</strong>
+            <span id="errorMessage" class="block sm:inline"></span>
+            <button class="absolute top-0 bottom-0 right-0 px-4 py-3" onclick="this.parentElement.parentElement.style.display='none'">
+                <svg class="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                    <title>关闭</title>
+                    <path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+    
     <main class="relative z-10 p-8">
         <div class="flex items-center justify-center mb-12">
             <svg class="w-8 h-8 mr-4 animate-spin-slow text-purple-500 dark:text-purple-400" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -59,7 +67,13 @@
         </div>
 
         <div class="flex flex-wrap justify-center gap-8 mb-16" id="teamMembers">
-            <!-- Team members will be dynamically inserted here -->
+            <div class="loading-placeholder text-center py-8">
+                <svg class="animate-spin h-8 w-8 mx-auto text-purple-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <p class="mt-4 text-gray-600 dark:text-gray-400">正在加载成员信息...</p>
+            </div>
         </div>
 
         <div class="flex items-center justify-center mb-8">
@@ -73,7 +87,13 @@
         </div>
 
         <div class="flex flex-wrap justify-center gap-8" id="projects">
-            
+            <div class="loading-placeholder text-center py-8">
+                <svg class="animate-spin h-8 w-8 mx-auto text-purple-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <p class="mt-4 text-gray-600 dark:text-gray-400">正在加载项目信息...</p>
+            </div>
         </div>
 
         <div class="text-center mt-8">
@@ -103,20 +123,6 @@
     <script src="js/data.js"></script>
     <script src="js/mosaic.js"></script>
     <script src="js/main.js"></script>
-    <script>
-        const projectsContainer = document.getElementById('projects');
-        const projectsData = projects; // 从 js/data.js 获取项目数据
-
-        projectsData.forEach(project => {
-            const projectElement = document.createElement('div');
-            projectElement.classList.add('w-64', 'p-4', 'bg-white', 'rounded-lg', 'shadow-md', 'dark:bg-gray-800', 'dark:text-white');
-            projectElement.innerHTML = `
-                <h3 class="text-xl font-bold mb-2">${project.title}</h3>
-                <p class="text-gray-700 dark:text-gray-400 mb-2">${project.description}</p>
-                <a href="${project.link}" target="_blank" class="text-blue-500 hover:underline">访问项目</a>
-            `;
-            projectsContainer.appendChild(projectElement);
-        });
-    </script>
+    <script src="js/updateData.js"></script>
 </body>
 </html>

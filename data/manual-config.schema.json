@@ -1,0 +1,88 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "手动配置文件说明",
+  "description": "用于配置团队网站的成员信息、项目展示和自动更新规则",
+  "type": "object",
+  "properties": {
+    "members_override": {
+      "description": "成员信息配置，使用GitHub用户名作为键名。所有字段都是可选的，未配置的字段将使用GitHub API获取的默认值",
+      "type": "object",
+      "patternProperties": {
+        "^.*$": {
+          "type": "object",
+          "properties": {
+            "role": {
+              "description": "显示的角色名称",
+              "type": "string"
+            },
+            "introduction": {
+              "description": "个人介绍，支持\\n换行",
+              "type": "string"
+            },
+            "skills": {
+              "description": "技能标签列表",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "interests": {
+              "description": "兴���标签列表",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "social": {
+              "description": "社交链接配置",
+              "type": "object",
+              "properties": {
+                "github": {
+                  "description": "GitHub用户名，用于自动获取信息",
+                  "type": "string"
+                },
+                "custom": {
+                  "description": "自定义社交链接",
+                  "type": "object",
+                  "properties": {
+                    "icon": {
+                      "description": "可以使用emoji或图标URL",
+                      "type": "string"
+                    },
+                    "url": {
+                      "description": "必须包含http://或https://",
+                      "type": "string",
+                      "pattern": "^https?://"
+                    },
+                    "name": {
+                      "description": "显示的名称",
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "customization": {
+              "description": "卡片样式自定���",
+              "type": "object",
+              "properties": {
+                "cardColor": {
+                  "description": "背景色：rgba或hex格式",
+                  "type": "string"
+                },
+                "textColor": {
+                  "description": "文字颜色",
+                  "type": "string"
+                },
+                "borderColor": {
+                  "description": "边框颜色",
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+} 

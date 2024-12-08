@@ -1,0 +1,28 @@
+{
+  "members": [
+    {
+      "name": "成员名称",
+      "role": "角色",
+      "avatar": "头像链接",
+      "github": "GitHub链接",
+      "blog": "个人网站链接",
+      "location": "所在地",
+      "introduction": "个人介绍",
+      "skills": ["技能1", "技能2"],
+      "interests": ["兴趣1", "兴趣2"],
+      "contact": {
+        "email": "邮箱",
+        "social": {
+          "github": "GitHub用户名",
+          "twitter": "Twitter用户名",
+          "bilibili": "B站用户名"
+        }
+      },
+      "customization": {
+        "cardColor": "卡片背景色",
+        "textColor": "文字颜色",
+        "borderColor": "边框颜色"
+      }
+    }
+  ]
+} 

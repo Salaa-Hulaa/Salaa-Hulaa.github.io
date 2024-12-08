@@ -3,10 +3,14 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [ main ]
+  repository_dispatch:
+    types: [update-content]
+  schedule:
+    - cron: '0 */6 * * *'
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -15,7 +19,236 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  update-data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          
+      - name: Prepare Data Directory
+        run: |
+          mkdir -p data
+          # 如果manual-config.json不存在，创建一个空的配置文件
+          if [ ! -f data/manual-config.json ]; then
+            echo '{"members_override":{},"projects_override":{}}' > data/manual-config.json
+          fi
+          
+      - name: Update Project and Member Data
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # 创建数据目录
+          mkdir -p data
+          
+          # 获取组织信息的脚本
+          cat > update-data.js << 'EOF'
+          const https = require('https');
+          const fs = require('fs');
+          
+          async function fetchGitHubAPI(path) {
+            return new Promise((resolve, reject) => {
+              const options = {
+                hostname: 'api.github.com',
+                path: path,
+                headers: {
+                  'User-Agent': 'Node.js',
+                  'Accept': 'application/vnd.github.v3+json',
+                  'Authorization': `Bearer ${process.env.GITHUB_TOKEN}`
+                }
+              };
+              
+              https.get(options, (res) => {
+                let data = '';
+                res.on('data', (chunk) => data += chunk);
+                res.on('end', () => {
+                  try {
+                    const jsonData = JSON.parse(data);
+                    if (res.statusCode >= 400) {
+                      reject(new Error(`API Error: ${res.statusCode} - ${jsonData.message || 'Unknown error'}`));
+                    } else {
+                      resolve(jsonData);
+                    }
+                  } catch (error) {
+                    reject(new Error(`Failed to parse response: ${error.message}`));
+                  }
+                });
+              }).on('error', reject);
+            });
+          }
+          
+          async function getRepoDetails(org, repo) {
+            try {
+              // 获取仓库基本信息
+              const repoData = await fetchGitHubAPI(`/repos/${org}/${repo}`);
+              // 获取最后更新信息
+              const commits = await fetchGitHubAPI(`/repos/${org}/${repo}/commits?per_page=1`);
+              // 获取README内容
+              const readmeData = await fetchGitHubAPI(`/repos/${org}/${repo}/readme`);
+              const readme = readmeData.content ? Buffer.from(readmeData.content, 'base64').toString() : '';
+              
+              return {
+                ...repoData,
+                last_commit: commits[0] || null,
+                readme_excerpt: readme.split('\n').slice(0, 3).join('\n')
+              };
+            } catch (error) {
+              console.error(`Error fetching details for ${repo}:`, error);
+              return null;
+            }
+          }
+          
+          async function updateData() {
+            try {
+              // 读取手动配置
+              let manualConfig = { members_override: {}, projects_override: {} };
+              try {
+                const configContent = fs.readFileSync('data/manual-config.json', 'utf8');
+                manualConfig = JSON.parse(configContent);
+              } catch (error) {
+                console.log('No manual config found or invalid format, using defaults');
+              }
+
+              // 获取组织成员
+              const members = await fetchGitHubAPI('/orgs/Salaa-Hulaa/members');
+              const memberDetails = await Promise.all(
+                members.map(async (member) => {
+                  try {
+                    const userDetails = await fetchGitHubAPI(`/users/${member.login}`);
+                    // 合并手动配置
+                    const override = manualConfig.members_override[member.login] || {};
+                    
+                    return {
+                      name: userDetails.name || userDetails.login,
+                      role: override.role || userDetails.bio || '团队成员',
+                      avatar: userDetails.avatar_url,
+                      github: userDetails.html_url,
+                      blog: userDetails.blog || null,
+                      location: userDetails.location || null,
+                      introduction: override.introduction || null,
+                      skills: override.skills || [],
+                      interests: override.interests || [],
+                      contact: {
+                        email: userDetails.email,
+                        social: {
+                          github: userDetails.login,
+                          twitter: override.social?.twitter || null,
+                          bilibili: override.social?.bilibili || null,
+                          custom: override.social?.custom || null
+                        }
+                      },
+                      customization: override.customization || null
+                    };
+                  } catch (error) {
+                    console.error(`Error fetching member ${member.login}:`, error);
+                    return null;
+                  }
+                })
+              );
+              
+              // 获取组织仓库
+              const repos = await fetchGitHubAPI('/orgs/Salaa-Hulaa/repos');
+              const projectDetails = await Promise.all(
+                repos.filter(repo => !repo.fork && !repo.private)
+                  .map(async (repo) => {
+                    try {
+                      const details = await getRepoDetails('Salaa-Hulaa', repo.name);
+                      if (!details) return null;
+                      
+                      // 合并手动配置
+                      const override = manualConfig.projects_override[repo.name] || {};
+                      
+                      return {
+                        title: repo.name,
+                        description: override.description_zh || repo.description || '暂无描述',
+                        link: repo.html_url,
+                        homepage: override.demo_url || repo.homepage,
+                        image: override.custom_image || `https://opengraph.githubassets.com/1/${repo.full_name}`,
+                        language: repo.language,
+                        stars: repo.stargazers_count,
+                        forks: repo.forks_count,
+                        last_update: details.last_commit ? details.last_commit.commit.author.date : null,
+                        topics: repo.topics || [],
+                        readme_excerpt: details.readme_excerpt,
+                        documentation: override.documentation || null,
+                        highlights: override.highlights || [],
+                        team_members: override.team_members || [],
+                        status: override.status || 'active',
+                        priority: override.priority || 0,
+                        category: override.category || 'other',
+                        customization: override.customization || null
+                      };
+                    } catch (error) {
+                      console.error(`Error processing project ${repo.name}:`, error);
+                      return null;
+                    }
+                  })
+              );
+              
+              // 过滤掉null值并按优先级排序
+              const validMembers = memberDetails.filter(m => m !== null);
+              const validProjects = projectDetails
+                .filter(p => p !== null)
+                .sort((a, b) => {
+                  // 首先按优先级排序
+                  if (a.priority !== b.priority) {
+                    return b.priority - a.priority;
+                  }
+                  // 然后按最后更新时间排序
+                  return new Date(b.last_update) - new Date(a.last_update);
+                });
+              
+              // 保存数据
+              fs.writeFileSync('data/members.json', JSON.stringify({ members: validMembers }, null, 2));
+              fs.writeFileSync('data/projects.json', JSON.stringify({ projects: validProjects }, null, 2));
+              
+              console.log('数据更新完成');
+              console.log(`成功获取 ${validMembers.length} 个成员信息`);
+              console.log(`成功获取 ${validProjects.length} 个项目信息`);
+              
+            } catch (error) {
+              console.error('更新数据时出错:', error);
+              process.exit(1);
+            }
+          }
+          
+          updateData();
+          EOF
+          
+          # 运行更新脚本
+          node update-data.js
+          
+      - name: Verify Data Files
+        run: |
+          # 检查数据文件是否存在且有效
+          for file in data/members.json data/projects.json data/manual-config.json; do
+            if [ ! -f "$file" ]; then
+              echo "Error: $file does not exist"
+              exit 1
+            fi
+            if ! jq empty "$file" 2>/dev/null; then
+              echo "Error: $file is not valid JSON"
+              exit 1
+            fi
+          done
+          echo "All data files are valid"
+          
+      - name: Commit and Push Data
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add data/
+          git commit -m "自动更新: 项目和成员数据" || echo "No changes to commit"
+          git push
+
   deploy:
+    needs: update-data
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -31,4 +264,4 @@ jobs:
           path: '.'
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4 
+        uses: actions/deploy-pages@v4
