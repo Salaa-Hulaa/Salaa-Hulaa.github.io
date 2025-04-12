@@ -91,7 +91,7 @@
 
 /* 卡片基础样式 */
 .card {
-    @apply rounded-xl p-6 relative overflow-hidden;
+    @apply rounded-xl p-4 relative overflow-hidden;
     background-color: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(8px);
     border: 1px solid rgba(255, 255, 255, 0.15);
@@ -134,7 +134,7 @@
 .project-details {
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     backface-visibility: hidden;
-    min-height: 200px;
+    min-height: 160px;
 }
 
 .hidden {
@@ -149,7 +149,7 @@
 
 /* 标题样式 */
 .card h3 {
-    @apply text-xl font-bold mb-3;
+    @apply text-xl font-bold mb-2;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 

@@ -32,44 +32,62 @@ main {
     text-align: center; /* Center the content horizontally */
 }
 
-#team-members {
+#teamMembers {
     display: flex;
     flex-wrap: nowrap;
     overflow-x: auto;
-    gap: 20px;
-    padding: 20px;
+    gap: 32px;
+    padding: 32px;
+    scroll-snap-type: x proximity;
+    scroll-padding: 32px;
+    margin: 0 auto;
+    max-width: 1200px;
 }
 
-#team-members::-webkit-scrollbar {
+#teamMembers::-webkit-scrollbar {
     height: 8px;
 }
 
-#team-members::-webkit-scrollbar-track {
+#teamMembers::-webkit-scrollbar-track {
     background: #f1f1f1;
 }
 
-#team-members::-webkit-scrollbar-thumb {
+#teamMembers::-webkit-scrollbar-thumb {
     background: #888;
     border-radius: 4px;
 }
 
-#team-members::-webkit-scrollbar-thumb:hover {
+#teamMembers::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
 
 .member {
     flex: 0 0 auto;
-    border: 1px solid #ccc;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    min-width: 200px;
+    border: 1px solid #e2e8f0;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    min-width: 240px;
     text-align: center;
     text-decoration: none;
+    background: white;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    position: relative;
+    z-index: 1;
+}
+
+.member:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    z-index: 2;
 }
 
 #projects {
-    max-width: 800px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 32px;
+    padding: 32px;
+    max-width: 1200px;
     margin: 0 auto;
 }
 
@@ -79,13 +97,22 @@ main {
 
 .project {
     background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 15px;
-    margin-bottom: 15px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    color:black;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    color: #1a202c;
     text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    position: relative;
+    z-index: 1;
+}
+
+.project:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    z-index: 2;
 }
 
 footer {
