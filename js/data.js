@@ -25,13 +25,13 @@ const teamMembers = [
     {
         id: 1,
         name: "Siupal",
-        role: "班长先生&群主大人",
+        role: "皮皮黑",
         links: {
             github: "https://github.com/siupal"
         },
         idea: {
-            title: "团队管理",
-            description: "带领团队前进，协调团队工作，确保项目顺利进行"
+            title: "hulaa",
+            description: "野心勃勃地半途而废"
         }
     },
     {
@@ -66,7 +66,7 @@ const projects = [
         id: 1,
         title: "坦克游戏",
         date: "2024-12-01",
-        description: "经典的坦克大战游戏，支持多人对战模式",
+        description: "经典的坦克大战游戏，支持多人对战模式，包含了一个小小的AI，对碳基生物可能不是那么公平",
         link: "https://salaa-hulaa.github.io/TankGame/",
         tags: ["游戏", "JavaScript", "HTML5"]
     },
@@ -74,8 +74,24 @@ const projects = [
         id: 2,
         title: "追逐游戏",
         date: "2024-12-15",
-        description: "有趣的追逐收集游戏，考验你的反应速度和策略",
+        description: "点击开始游戏，然后，跑！",
         link: "https://siupal.github.io/Chasing-Game/",
         tags: ["游戏", "JavaScript", "HTML5", "Canvas"]
+    },
+    {
+        id: 3,
+        title: "钢琴游戏",
+        date: "2025-01-10",
+        description: "在线弹钢琴，释放你的音乐才华——————(音色为曲线拟合，远远不如真实采样，仅做娱乐)",
+        link: "https://siupal.github.io/Piano/",
+        tags: ["音乐", "JavaScript", "HTML5", "Web Audio API"]
+    },
+    {
+        id: 4,
+        title: "触觉振荡器",
+        date: "2025-02-20",
+        description: "移动设备触觉反馈原型，提供可调节的振动体验(我的朋友更愿意称呼他为一个噪声制造器，点击-拖动-调节滑块，创造奇特的声音)",
+        link: "https://siupal.github.io/HapticOscillatorPrototype-Mobile/",
+        tags: ["触觉反馈", "移动设备", "JavaScript", "Web Vibration API"]
     }
 ]; 

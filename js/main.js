@@ -165,6 +165,32 @@ document.addEventListener('DOMContentLoaded', function() {
                         </a>
                     </div>
                 `;
+            } else if (project.title === "钢琴游戏") {
+                backContent.innerHTML = `
+                    <div class="mt-4 flex flex-wrap gap-2">
+                        ${project.tags.map(tag => 
+                            `<span class="px-2 py-1 bg-secondary text-secondary-foreground rounded text-sm">${tag}</span>`
+                        ).join('')}
+                    </div>
+                    <div class="mt-4 p-4 bg-muted rounded">
+                        <a href="${project.link}" target="_blank">
+                            <img src="assets/Piano.png" alt="钢琴游戏截图" class="w-full h-auto rounded hover:opacity-90 transition-opacity cursor-pointer" />
+                        </a>
+                    </div>
+                `;
+            } else if (project.title === "触觉振荡器") {
+                backContent.innerHTML = `
+                    <div class="mt-4 flex flex-wrap gap-2">
+                        ${project.tags.map(tag => 
+                            `<span class="px-2 py-1 bg-secondary text-secondary-foreground rounded text-sm">${tag}</span>`
+                        ).join('')}
+                    </div>
+                    <div class="mt-4 p-4 bg-muted rounded">
+                        <a href="${project.link}" target="_blank">
+                            <img src="assets/oscillator.png" alt="触觉振荡器截图" class="w-full h-auto rounded hover:opacity-90 transition-opacity cursor-pointer" />
+                        </a>
+                    </div>
+                `;
             } else {
                 backContent.innerHTML = `
                     <div class="mt-4 flex flex-wrap gap-2">
