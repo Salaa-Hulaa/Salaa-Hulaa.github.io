@@ -93,5 +93,13 @@ const projects = [
         description: "移动设备触觉反馈原型，提供可调节的振动体验(我的朋友更愿意称呼他为一个噪声制造器，点击-拖动-调节滑块，创造奇特的声音)",
         link: "https://siupal.github.io/HapticOscillatorPrototype-Mobile/",
         tags: ["触觉反馈", "移动设备", "JavaScript", "Web Vibration API"]
+    },
+    {
+        id: 5,
+        title: "赛博时钟",
+        date: "2025-03-15",
+        description: "具有未来科技感的HTML时钟，展示精确时间的同时带来视觉享受",
+        link: "https://salaa-hulaa.github.io/HtmlClock/",
+        tags: ["工具", "时钟", "JavaScript", "CSS动画"]
     }
 ]; 

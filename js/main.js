@@ -191,6 +191,19 @@ document.addEventListener('DOMContentLoaded', function() {
                         </a>
                     </div>
                 `;
+            } else if (project.title === "赛博时钟") {
+                backContent.innerHTML = `
+                    <div class="mt-4 flex flex-wrap gap-2">
+                        ${project.tags.map(tag => 
+                            `<span class="px-2 py-1 bg-secondary text-secondary-foreground rounded text-sm">${tag}</span>`
+                        ).join('')}
+                    </div>
+                    <div class="mt-4 p-4 bg-muted rounded">
+                        <a href="${project.link}" target="_blank">
+                            <img src="assets/CyberClock.png" alt="赛博时钟截图" class="w-full h-auto rounded hover:opacity-90 transition-opacity cursor-pointer" />
+                        </a>
+                    </div>
+                `;
             } else {
                 backContent.innerHTML = `
                     <div class="mt-4 flex flex-wrap gap-2">
