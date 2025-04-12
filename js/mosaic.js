@@ -7,15 +7,30 @@ function initMosaicBackground() {
     function resizeCanvas() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
+        drawMosaic(); // 重新绘制马赛克
     }
     
     window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
     
-    drawMosaic();
+    // 添加页面可见性变化的监听器
+    document.addEventListener('visibilitychange', function() {
+        if (document.visibilityState === 'visible') {
+            // 页面恢复可见时重新绘制马赛克
+            drawMosaic();
+        }
+    });
+    
+    // 添加窗口焦点变化的监听器
+    window.addEventListener('focus', function() {
+        drawMosaic();
+    });
+    
+    resizeCanvas();
 }
 
 function drawMosaic() {
+    if (!canvas || !ctx) return; // 防止在canvas未初始化时调用
+    
     const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
     const colors = themeColors[currentTheme].mosaicColors;
     
@@ -34,4 +49,4 @@ function drawMosaic() {
 
 function updateMosaicColors(isDark, theme) {
     drawMosaic();
-} 
+}
