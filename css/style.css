@@ -1,3 +1,4 @@
+/* 基础样式 & Tailwind配置 */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -36,6 +37,404 @@
     --accent-foreground: 210 40% 98%;
     --border: 217.2 32.6% 17.5%;
     --ring: 224.3 76.3% 48%;
+  }
+
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+/* 布局结构 */
+.main-container {
+  @apply relative z-10 p-8 flex-1;
+}
+
+/* 团队成员模块 */
+.team-section {
+  @apply mb-16;
+}
+
+#teamMembers {
+  @apply flex flex-wrap justify-center gap-8;
+  scroll-snap-type: x proximity;
+  scroll-padding: 32px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px;
+}
+
+/* 项目展示模块 */
+.projects-section {
+  @apply mb-8;
+}
+
+#projects {
+  @apply flex flex-wrap justify-center gap-8;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px;
+}
+
+/* 页脚 */
+footer {
+  @apply mt-16 py-8 border-t border-gray-200 dark:border-gray-700;
+}
+
+/* ==================== 组件样式 ==================== */
+/* 卡片组件 */
+.card {
+  @apply rounded-xl p-4 relative overflow-hidden;
+  background-color: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 卡片内容布局 */
+.card > div {
+  @apply h-full flex flex-col justify-between;
+}
+
+/* 卡片标题 */
+.card h3 {
+  @apply text-xl font-bold mb-2;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* 卡片链接效果 */
+.card a {
+  @apply relative no-underline opacity-80;
+  transition: all 0.2s ease;
+}
+
+.card a::after {
+  content: '';
+  @apply absolute w-full h-px bottom-0 left-0 bg-current;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.3s ease;
+}
+
+.card a:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* 卡片标签 */
+.card .tag {
+  @apply px-2 py-1 rounded-md text-sm;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(4px);
+}
+
+/* 提示文本 */
+.card .hint-text {
+  @apply text-sm mt-4 text-center opacity-60;
+  transition: opacity 0.3s ease;
+}
+
+.card:hover .hint-text {
+  @apply opacity-80;
+}
+
+/* 暗色主题卡片样式 */
+.dark .card {
+  background-color: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.dark .card:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+/* 团队成员卡片 */
+.member {
+  @apply card;
+  min-width: 240px;
+  text-align: center;
+}
+
+.member:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+/* 项目卡片 */
+.project {
+  @apply card;
+  margin-bottom: 20px;
+}
+
+.project:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+/* ==================== 动画效果 ==================== */
+/* 加载动画 */
+#loading-screen {
+  @apply fixed inset-0 bg-black flex flex-col justify-center items-center z-50;
+  transition: opacity 0.5s ease-out;
+  overflow: hidden;
+}
+
+.loading-text {
+  @apply text-white text-base font-mono;
+  font-family: 'Press Start 2P', monospace;
+  letter-spacing: 2px;
+  animation: glitch 1s infinite alternate;
+  text-shadow: 
+    2px 0 #ff00ff, 
+    -2px 0 #00ffff;
+}
+
+.pixel-ground {
+  @apply relative w-50 h-2.5 bg-green-800 mb-5;
+}
+
+@keyframes glitch {
+  0% { 
+    transform: translate(0);
+    text-shadow: 2px 0 #ff00ff, -2px 0 #00ffff;
+  }
+  25% { 
+    transform: translate(-2px, 2px);
+    text-shadow: -2px 0 #ff00ff, 2px 0 #00ffff;
+  }
+  50% { 
+    transform: translate(0);
+    text-shadow: 2px 0 #ff00ff, -2px 0 #00ffff;
+  }
+  75% { 
+    transform: translate(2px, -2px);
+    text-shadow: -2px 0 #ff00ff, 2px 0 #00ffff;
+  }
+  100% { 
+    transform: translate(0);
+    text-shadow: 2px 0 #ff00ff, -2px 0 #00ffff;
+  }
+}
+
+/* 像素小人动画 */
+.pixel-character {
+  @apply relative w-10 h-15 mb-8;
+}
+
+.pixel-head {
+  @apply absolute top-0 left-2.5 w-5 h-5 bg-skin-base;
+  animation: bobbing 0.6s infinite alternate;
+}
+
+.pixel-body {
+  @apply absolute top-5 left-1.25 w-7.5 h-5 bg-primary;
+  animation: breathing 1s infinite alternate;
+}
+
+.pixel-leg-left, .pixel-leg-right {
+  @apply absolute top-10 h-5 bg-gray-700;
+  width: 10px;
+  animation-duration: 0.6s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  transform-origin: top;
+}
+
+.pixel-leg-left {
+  @apply left-2;
+  animation-name: walking-left;
+}
+
+.pixel-leg-right {
+  @apply right-2;
+  animation-name: walking-right;
+}
+
+.pixel-arm-left, .pixel-arm-right {
+  @apply absolute top-5 w-2.5 h-3.75 bg-primary;
+  animation-duration: 0.8s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  transform-origin: top;
+}
+
+.pixel-arm-left {
+  @apply left-0;
+  animation-name: waving-left;
+}
+
+.pixel-arm-right {
+  @apply right-0;
+  animation-name: waving-right;
+}
+
+/* 水花效果 */
+.water-splash {
+  @apply absolute inset-0;
+}
+
+.water-drop {
+  @apply absolute w-1.5 h-1.5 rounded-full bg-teal-200 opacity-0;
+  animation: splash 1.5s infinite;
+}
+
+/* 动画定义 */
+@keyframes bobbing {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-3px); }
+}
+
+@keyframes breathing {
+  0% { transform: scaleX(1); }
+  100% { transform: scaleX(1.05); }
+}
+
+@keyframes walking-left {
+  0% { transform: rotate(-10deg); }
+  100% { transform: rotate(10deg); }
+}
+
+@keyframes walking-right {
+  0% { transform: rotate(10deg); }
+  100% { transform: rotate(-10deg); }
+}
+
+@keyframes waving-left {
+  0% { transform: rotate(10deg); }
+  100% { transform: rotate(30deg); }
+}
+
+@keyframes waving-right {
+  0% { transform: rotate(-10deg); }
+  100% { transform: rotate(-30deg); }
+}
+
+@keyframes splash {
+  0% { transform: translateY(0); opacity: 0; }
+  50% { transform: translateY(-20px); opacity: 1; }
+  100% { transform: translateY(-40px); opacity: 0; }
+}
+
+/* 旋转动画 */
+.animate-spin-slow {
+  animation: spin 3s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* 浮动动画 */
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+/* 文字渐变效果 */
+.text-gradient {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent;
+  animation: hue-rotate 10s linear infinite;
+}
+
+@keyframes hue-rotate {
+  from { filter: hue-rotate(0deg); }
+  to { filter: hue-rotate(360deg); }
+}
+
+/* ==================== 主题系统 ==================== */
+/* 像素主题 */
+[data-theme="pixel"] {
+  image-rendering: pixelated;
+  --pixel-shadow: 
+    2px 0 0 0 rgba(0, 0, 0, 0.2),
+    -2px 0 0 0 rgba(0, 0, 0, 0.2),
+    0 2px 0 0 rgba(0, 0, 0, 0.2),
+    0 -2px 0 0 rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="pixel"] * {
+  font-family: 'Zpix', 'Noto Sans SC', monospace !important;
+  letter-spacing: 0;
+  line-height: 1.5;
+  image-rendering: pixelated;
+}
+
+[data-theme="pixel"] .card {
+  @apply border-2 border-solid border-black bg-white bg-opacity-90 p-4;
+  box-shadow: var(--pixel-shadow);
+  transform: translate(0, 0);
+  transition: transform 0.1s step-end;
+}
+
+[data-theme="pixel"] .card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 
+    4px 0 0 0 rgba(0, 0, 0, 0.2),
+    -2px 0 0 0 rgba(0, 0, 0, 0.2),
+    0 4px 0 0 rgba(0, 0, 0, 0.2),
+    0 -2px 0 0 rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="pixel"] .tag {
+  @apply border-2 border-solid border-black px-1 py-0.5;
+  box-shadow: var(--pixel-shadow);
+}
+
+/* 中国风主题 */
+[data-theme="chinese"] * {
+  font-family: 'Noto Serif SC', serif;
+  letter-spacing: 0.05em;
+  line-height: 1.8;
+}
+
+[data-theme="chinese"] .card {
+  @apply rounded-sm;
+  box-shadow: 
+    0 4px 12px -2px rgba(0, 0, 0, 0.1),
+    0 2px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+/* 科技主题 */
+[data-theme="tech"] * {
+  font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
+  letter-spacing: 0.02em;
+  line-height: 1.6;
+}
+
+/* 简约主题 */
+[data-theme="minimal"] * {
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  letter-spacing: -0.01em;
+  line-height: 1.7;
+}
+
+/* 字体定义 */
+@font-face {
+  font-family: 'Zpix';
+  src: url('https://fastly.jsdelivr.net/gh/SolidZORO/zpix-pixel-font@latest/dist/zpix.ttf') format('truetype');
+  font-display: swap;
+}
+
+/* 无障碍支持 */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
   }
 }
 
@@ -384,48 +783,4 @@ a::after {
 a:hover::after {
     transform: scaleX(1);
     transform-origin: left;
-}
-
-/* 基础字体设置 */
-@layer base {
-  body {
-    @apply bg-background text-foreground;
-    font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  }
-}
-
-/* 像素主题 */
-[data-theme="pixel"] * {
-    font-family: 'Zpix', 'Noto Sans SC', monospace !important;
-    letter-spacing: 0;
-    line-height: 1.5;
-    image-rendering: pixelated;
-}
-
-/* 科技主题 */
-[data-theme="tech"] * {
-    font-family: 'JetBrains Mono', 'Noto Sans SC', monospace;
-    letter-spacing: 0.02em;
-    line-height: 1.6;
-}
-
-/* 中国风主题 */
-[data-theme="chinese"] * {
-    font-family: 'Noto Serif SC', serif;
-    letter-spacing: 0.05em;
-    line-height: 1.8;
-}
-
-/* 简约主题 */
-[data-theme="minimal"] * {
-    font-family: 'Inter', 'Noto Sans SC', sans-serif;
-    letter-spacing: -0.01em;
-    line-height: 1.7;
-}
-
-/* Zpix 像素字体 */
-@font-face {
-    font-family: 'Zpix';
-    src: url('https://fastly.jsdelivr.net/gh/SolidZORO/zpix-pixel-font@latest/dist/zpix.ttf') format('truetype');
-    font-display: swap;
 }
