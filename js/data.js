@@ -69,5 +69,13 @@ const projects = [
         description: "经典的坦克大战游戏，支持多人对战模式",
         link: "https://salaa-hulaa.github.io/TankGame/",
         tags: ["游戏", "JavaScript", "HTML5"]
+    },
+    {
+        id: 2,
+        title: "追逐游戏",
+        date: "2024-12-15",
+        description: "有趣的追逐收集游戏，考验你的反应速度和策略",
+        link: "https://siupal.github.io/Chasing-Game/",
+        tags: ["游戏", "JavaScript", "HTML5", "Canvas"]
     }
 ]; 

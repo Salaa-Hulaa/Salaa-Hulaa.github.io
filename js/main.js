@@ -137,21 +137,51 @@ document.addEventListener('DOMContentLoaded', function() {
             // 创建背面内容（标签和详细信息）
             const backContent = document.createElement('div');
             backContent.className = 'project-details hidden';
-            backContent.innerHTML = `
-                <div class="mt-4 flex flex-wrap gap-2">
-                    ${project.tags.map(tag => 
-                        `<span class="px-2 py-1 bg-secondary text-secondary-foreground rounded text-sm">${tag}</span>`
-                    ).join('')}
-                </div>
-                <div class="mt-4 p-4 bg-muted rounded">
-                    <p class="text-muted-foreground">项目详情敬请期待...</p>
-                </div>
-            `;
+            
+            // 为特定游戏添加图片
+            if (project.title === "坦克游戏") {
+                backContent.innerHTML = `
+                    <div class="mt-4 flex flex-wrap gap-2">
+                        ${project.tags.map(tag => 
+                            `<span class="px-2 py-1 bg-secondary text-secondary-foreground rounded text-sm">${tag}</span>`
+                        ).join('')}
+                    </div>
+                    <div class="mt-4 p-4 bg-muted rounded">
+                        <a href="${project.link}" target="_blank">
+                            <img src="assets/tank.png" alt="坦克游戏截图" class="w-full h-auto rounded hover:opacity-90 transition-opacity cursor-pointer" />
+                        </a>
+                    </div>
+                `;
+            } else if (project.title === "追逐游戏") {
+                backContent.innerHTML = `
+                    <div class="mt-4 flex flex-wrap gap-2">
+                        ${project.tags.map(tag => 
+                            `<span class="px-2 py-1 bg-secondary text-secondary-foreground rounded text-sm">${tag}</span>`
+                        ).join('')}
+                    </div>
+                    <div class="mt-4 p-4 bg-muted rounded">
+                        <a href="${project.link}" target="_blank">
+                            <img src="assets/Collector.png" alt="追逐游戏截图" class="w-full h-auto rounded hover:opacity-90 transition-opacity cursor-pointer" />
+                        </a>
+                    </div>
+                `;
+            } else {
+                backContent.innerHTML = `
+                    <div class="mt-4 flex flex-wrap gap-2">
+                        ${project.tags.map(tag => 
+                            `<span class="px-2 py-1 bg-secondary text-secondary-foreground rounded text-sm">${tag}</span>`
+                        ).join('')}
+                    </div>
+                    <div class="mt-4 p-4 bg-muted rounded">
+                        <p class="text-muted-foreground">项目详情敬请期待...</p>
+                    </div>
+                `;
+            }
 
             // 添加点击切换效果
             projectCard.addEventListener('click', (e) => {
-                // 如果点击的是链接，不触发卡片翻转
-                if (e.target.tagName === 'A') return;
+                // 如果点击的是链接或图片，不触发卡片翻转
+                if (e.target.tagName === 'A' || e.target.tagName === 'IMG') return;
                 frontContent.classList.toggle('hidden');
                 backContent.classList.toggle('hidden');
             });
